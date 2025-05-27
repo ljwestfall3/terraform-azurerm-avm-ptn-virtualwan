@@ -1,28 +1,7 @@
-module "vpn_gateway" {
-  source = "./modules/site-to-site-gateway"
-
-  vpn_gateways = {
-    for key, value in local.vpn_gateways : key => {
-      name                                  = value.name
-      resource_group_name                   = module.virtual_hubs.resource_object[value.virtual_hub_key].resource_group
-      location                              = module.virtual_hubs.resource_object[value.virtual_hub_key].location
-      virtual_hub_id                        = module.virtual_hubs.resource_object[value.virtual_hub_key].id
-      bgp_route_translation_for_nat_enabled = value.bgp_route_translation_for_nat_enabled
-      scale_unit                            = value.scale_unit
-      routing_preference                    = value.routing_preference
-      bgp_settings                          = value.bgp_settings
-    }
-  }
-}
-
-moved {
-  from = azurerm_vpn_gateway.vpn_gateway
-  to   = module.vpn_gateway.azurerm_vpn_gateway.vpn_gateway
-}
-
 # Create a vpn site. Sites represent the Physical locations (On-Premises) you wish to connect.
 module "vpn_site" {
   source = "./modules/site-to-site-vpn-site"
+
   vpn_sites = {
     for key, value in local.vpn_sites : key => {
       name                = value.name
@@ -47,6 +26,7 @@ moved {
 # Create a site to site vpn connection between a vpn gateway and a vpn site.
 module "vpn_site_connection" {
   source = "./modules/site-to-site-gateway-conn"
+
   vpn_site_connection = {
     for key, conn in local.vpn_site_connections : key => {
       name                      = conn.name
@@ -82,7 +62,6 @@ module "vpn_site_connection" {
     }
 
   }
-  depends_on = [module.vpn_site, module.vpn_gateway]
 }
 
 moved {

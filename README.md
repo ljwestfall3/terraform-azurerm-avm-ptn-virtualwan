@@ -495,6 +495,7 @@ map(object({
     resource_group                         = optional(string, null)
     address_prefix                         = string
     tags                                   = optional(map(string))
+    sku                                    = optional(string, "Standard")
     hub_routing_preference                 = optional(string, "ExpressRoute")
     virtual_router_auto_scale_min_capacity = optional(number, 2)
   }))
@@ -778,6 +779,14 @@ Default: `{}`
 ## Outputs
 
 The following outputs are exported:
+
+### <a name="output_ergw"></a> [ergw](#output\_ergw)
+
+Description: ExpressRoute Gateway Objects
+
+### <a name="output_ergw_id"></a> [ergw\_id](#output\_ergw\_id)
+
+Description: ExpressRoute Gateway ID
 
 ### <a name="output_firewall_ip_addresses"></a> [firewall\_ip\_addresses](#output\_firewall\_ip\_addresses)
 
